@@ -83,7 +83,7 @@ No separate API bill. A Kestrel run makes no paid calls. Nothing in the product 
 
 Screen recording: not filmed from here. Three minutes, no slides: the duplicate claim number, a Rs 1,995 row, the June line in `out/evidence.txt`, then the screen on Pune SP3160 and on the ordinary repair, and say out loud that accuracy and the new-partner flag were thrown out. Paste the Drive link over the next line.
 
-Drive link:
+Drive link: https://drive.google.com/file/d/1avNGk_13756YGmtkPHhcBrNRz6FwAU2J/view?usp=sharing
 
 ## Someone picks this up on Monday and you are unreachable. The three things they need to know.
 
