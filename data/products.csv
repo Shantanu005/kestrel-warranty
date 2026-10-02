@@ -1,0 +1,22 @@
+sku,family,list_price_inr,warranty_months
+KH-AF-01,Air Fryer,5199,12
+KH-AF-02,Air Fryer,6499,12
+KH-AF-03,Air Fryer,8773,12
+KH-MG-01,Mixer Grinder,3199,24
+KH-MG-02,Mixer Grinder,3999,24
+KH-MG-03,Mixer Grinder,5398,24
+KH-WP-01,Water Purifier,11999,12
+KH-WP-02,Water Purifier,14999,12
+KH-WP-03,Water Purifier,20248,12
+KH-RV-01,Robot Vacuum,17599,12
+KH-RV-02,Robot Vacuum,21999,12
+KH-RV-03,Robot Vacuum,29698,12
+KH-IC-01,Induction Cooktop,2399,12
+KH-IC-02,Induction Cooktop,2999,12
+KH-IC-03,Induction Cooktop,4048,12
+KH-CF-01,Ceiling Fan,2799,24
+KH-CF-02,Ceiling Fan,3499,24
+KH-CF-03,Ceiling Fan,4723,24
+KH-RH-01,Room Heater,1999,12
+KH-RH-02,Room Heater,2499,12
+KH-RH-03,Room Heater,3373,12

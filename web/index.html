@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kestrel claim desk</title>
+  <style>
+    :root {
+      --ink: #1c1915;
+      --muted: #5e584f;
+      --paper: #f3efe6;
+      --card: #fffdf8;
+      --line: #ddd4c4;
+      --hold: #8a2e1c;
+      --hold-bg: #f8ebe6;
+      --pay: #1d5c3a;
+      --pay-bg: #e7f2eb;
+      --accent: #8a5a12;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font: 16px/1.45 "Avenir Next", "Segoe UI", sans-serif;
+    }
+    header {
+      padding: 28px 32px 8px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+    h1 { font-size: 28px; font-weight: 650; margin: 0 0 6px; letter-spacing: -0.03em; }
+    .lede { color: var(--muted); max-width: 62ch; margin: 0; }
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 20px 32px 48px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+    }
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px 18px 20px;
+    }
+    h2 { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0 0 12px; }
+    .examples { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    button, .submit {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font: inherit;
+      cursor: pointer;
+    }
+    button:hover, .submit:hover { border-color: var(--accent); }
+    .submit {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+      margin-top: 8px;
+    }
+    form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
+    label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted); }
+    label.wide { grid-column: 1 / -1; }
+    input, select {
+      font: inherit;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #fff;
+    }
+    .result.empty { color: var(--muted); }
+    .decision {
+      display: inline-block;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .decision.review { background: var(--hold-bg); color: var(--hold); }
+    .decision.pay { background: var(--pay-bg); color: var(--pay); }
+    .rupees { font-size: 34px; letter-spacing: -0.03em; margin: 0 0 4px; }
+    .meta { color: var(--muted); margin: 0 0 12px; }
+    ul { margin: 0; padding-left: 18px; }
+    li { margin: 0 0 8px; }
+    .error { color: var(--hold); }
+    .note { font-size: 13px; color: var(--muted); margin-top: 14px; }
+    @media (max-width: 860px) {
+      main { grid-template-columns: 1fr; padding: 16px; }
+      header { padding: 20px 16px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Kestrel claim desk</h1>
+    <p class="lede">One warranty claim. The chance it is fraud, the rupees that chance puts at stake, and whether that beats the Rs 380 goodwill of holding a genuine customer. The desk can look at forty claims a month.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Claim</h2>
+      <div class="examples" id="examples"></div>
+      <form id="form">
+        <label>Claim number<input name="claim_id" required value="WC710876"></label>
+        <label>Submitted<input name="submitted_at" required value="2026-06-11 22:40:00"></label>
+        <label>Outlet<input name="partner_id" required value="SP3160"></label>
+        <label>SKU<input name="sku" required value="KH-IC-01"></label>
+        <label>Amount, Rs<input name="claim_amount_inr" type="number" min="1" step="1" required value="1995"></label>
+        <label>Days since purchase<input name="days_since_purchase" type="number" min="0" step="1" required value="41"></label>
+        <label>Photo
+          <select name="photo_attached"><option>Y</option><option>N</option></select>
+        </label>
+        <label>Partner inspected
+          <select name="partner_inspected"><option>N</option><option>Y</option></select>
+        </label>
+        <label>Earlier claims by this customer<input name="customer_prior_claims" type="number" min="0" step="1" required value="0"></label>
+        <label>Source
+          <select name="source"><option>crm</option><option>legacy_zoho</option></select>
+        </label>
+        <label class="wide">Serial<input name="product_serial" value="KH000000000"></label>
+        <label class="wide">Fault description<input name="claim_description" value="unit not heating"></label>
+        <label class="wide">Inspector note<input name="inspector_note" value=""></label>
+        <div class="wide"><button class="submit" type="submit">Score this claim</button></div>
+      </form>
+    </section>
+    <section>
+      <h2>Desk read</h2>
+      <div id="result" class="result empty">Score a claim. The reasons are what a reviewer would read.</div>
+      <p class="note" id="status"></p>
+    </section>
+  </main>
+  <script>
+    const form = document.getElementById("form");
+    const result = document.getElementById("result");
+    const examples = document.getElementById("examples");
+    const status = document.getElementById("status");
+
+    function fill(record) {
+      for (const [key, value] of Object.entries(record)) {
+        const field = form.elements[key];
+        if (field) field.value = value;
+      }
+    }
+
+    function payload() {
+      const data = Object.fromEntries(new FormData(form).entries());
+      data.claim_amount_inr = Number(data.claim_amount_inr);
+      data.days_since_purchase = Number(data.days_since_purchase);
+      data.customer_prior_claims = Number(data.customer_prior_claims);
+      return data;
+    }
+
+    function money(n) {
+      return "Rs " + Math.round(n).toLocaleString("en-IN");
+    }
+
+    function show(body) {
+      if (body.error) {
+        result.className = "result";
+        result.innerHTML = '<p class="error"></p>';
+        result.querySelector("p").textContent = body.error;
+        return;
+      }
+      const held = body.decision === "review";
+      result.className = "result";
+      const reasons = (body.reasons || []).map((line) => {
+        const li = document.createElement("li");
+        li.textContent = line;
+        return li.outerHTML;
+      }).join("");
+      result.innerHTML = `
+        <div class="decision ${held ? "review" : "pay"}">${held ? "Hold for the desk" : "Pay"}</div>
+        <p class="rupees">${money(body.expected_fraud_inr)} at stake</p>
+        <p class="meta">Chance of fraud ${ (body.score * 100).toFixed(1) }%. Goodwill if this customer is genuine: ${money(body.goodwill_if_genuine_inr)}. Net of holding it: ${money(body.net_if_held_inr)}.</p>
+        <ul>${reasons}</ul>
+        <p class="note">${held
+          ? "If more than forty claims clear this bar in the month, check the ones with the most rupees at stake first."
+          : "Leave it in the normal payout. The rupees at stake do not clear the Rs 380 goodwill."}</p>`;
+    }
+
+    async function score(record) {
+      status.textContent = "Scoring…";
+      const response = await fetch("/api/score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(record),
+      });
+      const body = await response.json();
+      status.textContent = "";
+      show(body);
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      score(payload());
+    });
+
+    fetch("/api/examples").then((r) => r.json()).then((body) => {
+      if (body.note) status.textContent = body.note;
+      for (const example of body.examples || []) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = example.label;
+        button.addEventListener("click", () => {
+          fill(example.record);
+          score(example.record);
+        });
+        examples.appendChild(button);
+      }
+    }).catch(() => {
+      status.textContent = "The desk is not running.";
+    });
+  </script>
+</body>
+</html>

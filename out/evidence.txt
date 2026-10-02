@@ -1,0 +1,91 @@
+Kestrel warranty queue — evidence
+Recomputed by python check.py from data/. The June row is the one that matters.
+
+Labels
+  Raw train rows: 12029
+  Kept one row per claim number: 11348 (dropped 1362 resubmit copies)
+  Confirmed fraud: 141
+  Open investigations, blank in the CRM, left out of the fit: 202
+  Legacy Zoho rows have no blanks. Open cases there were stored as 0, so a few
+  'not fraud' labels in 2025 are unfinished. The fit treats them as not fraud.
+  Paying every decided claim scores 98.7% accuracy and stops Rs 0.
+  Rows whose description tries to instruct an automated reviewer: 5 (4 claim numbers; one was resubmitted). They were not followed.
+
+New outlets are not the class
+  Outlet joined in the last year: 2.2% confirmed fraud
+  Older outlet: 1.1%
+  Ten outlets account for 89 of 141 confirmed frauds.
+  Largest confirmed counts:
+  SP3207  Hyderabad  franchise  joined 2022-02-23  13 confirmed
+  SP3376  Mysuru  franchise  joined 2023-04-08  12 confirmed
+  SP3095  Bhopal  franchise  joined 2021-11-17  10 confirmed
+  SP3160  Pune  authorised_service_centre  joined 2025-12-27  10 confirmed
+  SP3103  Jaipur  franchise  joined 2022-07-27  9 confirmed
+  SP3350  Hubballi  franchise  joined 2023-02-20  9 confirmed
+  SP3228  Pune  freelance_technician  joined 2021-08-11  7 confirmed
+  SP3232  Jaipur  authorised_service_centre  joined 2025-11-26  7 confirmed
+
+After 1 May 2026 the confirmed frauds are these outlets:
+  SP3160  Pune  10
+  SP3232  Jaipur  7
+  SP3318  Hubballi  5
+  SP3129  Chennai  4
+  SP3319  Warangal  3
+  SP3118  Pune  2
+  SP3286  Mysuru  2
+  SP3027  Pune  1
+  SP3121  Jaipur  1
+  SP3275  Coimbatore  1
+  Claims filed at Rs 1,990–1,999 in May–June: 90, of which 8 were confirmed fraud.
+  The unlabelled July–September file has 133 claims in that same band.
+
+Desk of 40 a month. Goodwill for holding a genuine customer: Rs 380.
+A service contact is Rs 260; the desk is already staffed, so the headline net
+does not subtract it. The last column does, as a sensitivity.
+
+Month     how      AUC    caught   of fraud-Rs    net after goodwill   accuracy if queued   accuracy if paid all
+2025-12  off      0.944   Rs 59,651     Rs 66,596     Rs 47,111   95.5%   98.7%   tp 7 of 10
+2026-01  off      0.846   Rs 33,293     Rs 47,614     Rs 19,993   94.8%   98.9%   tp 5 of 8
+2026-02  off      0.999   Rs 49,693     Rs 49,693     Rs 36,393   95.0%   99.3%   tp 5 of 5
+2026-03  off      0.790   Rs 42,284     Rs 56,429     Rs 29,364   95.0%   98.8%   tp 6 of 9
+2026-04  off      0.698   Rs 26,383     Rs 36,986     Rs 12,703   94.2%   98.7%   tp 4 of 9
+2026-05  policy   0.848   Rs 13,981     Rs 21,450      Rs 1,821   94.7%   98.0%   tp 8 of 14
+2026-06  fit      0.841   Rs 21,040     Rs 45,673     Rs 11,540   95.6%   96.9%   tp 15 of 22
+
+June is the honest test of the new rule: the cap score was fit on May only.
+  Top 40 caught 15 of 22 confirmed frauds, Rs 21,040 of Rs 45,673.
+  Goodwill on the 25 genuine claims held: Rs 9,500. Net Rs 11,540, about Rs 526 of fraud stopped per claim checked, Rs 288 after goodwill.
+  If the Rs 260 contact is charged on every slot as well, June net is Rs 1,140.
+  Queue accuracy 95.6%. Paying everyone that month scores 96.9%.
+  May had no post-change labels yet, so that month uses the written policy, not a fit.
+  May top 40: 8 of 14, Rs 13,981 of Rs 21,450, net Rs 1,821.
+
+June catch count across 40 resamples of May (seed 42): min 11, median 14, max 15. The point estimate of 15 is not a promise. Spread: {11: 2, 12: 5, 13: 7, 14: 13, 15: 13}.
+
+June claims the queue missed:
+  WC711262  SP3275  Coimbatore  Rs 17,866  score 0.011  share 60%  prior frauds 0  small-claims-30d 2
+  WC711279  SP3118  Pune  Rs 1,646  score 0.042  share 7%  prior frauds 1  small-claims-30d 1
+  WC711116  SP3118  Pune  Rs 1,406  score 0.003  share 5%  prior frauds 0  small-claims-30d 0
+  WC711271  SP3286  Mysuru  Rs 1,191  score 0.096  share 35%  prior frauds 1  small-claims-30d 1
+  WC711249  SP3286  Mysuru  Rs 999  score 0.007  share 7%  prior frauds 0  small-claims-30d 0
+  WC710726  SP3129  Chennai  Rs 839  score 0.126  share 16%  prior frauds 1  small-claims-30d 3
+  WC710711  SP3121  Jaipur  Rs 686  score 0.006  share 21%  prior frauds 0  small-claims-30d 1
+Largest genuine June claims the queue would have held:
+  WC711222  SP3095  Bhopal  Rs 13,112  score 0.570  share 65%  prior frauds 10  small-claims-30d 2
+  WC711165  SP3095  Bhopal  Rs 8,237  score 0.728  share 69%  prior frauds 10  small-claims-30d 3
+  WC710717  SP3207  Hyderabad  Rs 5,904  score 0.326  share 29%  prior frauds 13  small-claims-30d 1
+  WC710935  SP3207  Hyderabad  Rs 5,584  score 0.493  share 47%  prior frauds 13  small-claims-30d 0
+  WC711157  SP3207  Hyderabad  Rs 4,233  score 0.341  share 19%  prior frauds 13  small-claims-30d 2
+
+Unlabelled July–September file, scored with May and June both in the fit.
+  Rows: 2252. Score min 0.0014, max 0.8539.
+  Claims that clear the money test (chance × rupees > goodwill), by month:
+    2026-07: 38
+    2026-08: 40
+    2026-09: 35
+  That count can exceed 40. The desk takes the 40 with the most rupees at stake.
+
+What this file does not prove: the July–September outcomes. Those are not in the pack.
+Expectation written down before those outcomes are known: ROC AUC about 0.85,
+in a range of roughly 0.78 to 0.90 if the same outlets keep filing under the cap.
+A first month at a brand-new outlet, and a single large claim from a quiet outlet, will be missed.
