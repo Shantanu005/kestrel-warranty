@@ -12,15 +12,19 @@ Paying every decided claim in the history scores 98.7% accuracy and stops Rs 0. 
 
 **Expected score on the unlabelled file: ROC AUC about 0.85, somewhere from 0.78 to 0.90** if the same outlets keep filing under the Rs 2,000 line. That is the June figure (0.84) with May and June both available to the shipped model, so a little better than June is plausible, and a move to brand-new outlets would land lower. I do not expect an accuracy above the pay-all baseline to mean the queue is working. If the file is scored as accuracy at a 0.5 cut, most claims sit well below 0.5, so the number will look like "pay almost everyone" and will clear 97% without catching the fraud.
 
-## What does one run cost, and what would a month cost at Kestrel's volume?
+## What does one prediction cost, and what would a month cost at Kestrel's volume (about 750 warranty claims a month)?
 
-No paid calls. One score is arithmetic on a saved logistic regression.
+No paid calls. Scoring a claim does not call a model API. It is arithmetic on a logistic regression saved in `model/model.json`.
 
-A claim: **Rs 0**.
+One prediction: **Rs 0**.
 
-A month is about 750 claims (the unlabelled file is 2,252 over July–September). Still **Rs 0**.
+A month, at the volume they named:
 
-The assistant that wrote the code is Cursor. That is a subscription, not a per-claim charge, and it is not part of a Kestrel run.
+750 claims × Rs 0 per prediction = **Rs 0**.
+
+The unlabelled file is the check on that volume. 2,252 claims over July, August and September is 2,252 / 3 = 751 claims a month, which is the 750 they quoted.
+
+Cursor wrote the code. That is a subscription on this side, not a charge Kestrel pays per claim, and it is not part of a prediction.
 
 ## How do you know it works?
 
